@@ -43,20 +43,22 @@ backend/
     prompts.py             # Reserved for future AI features (currently empty)
     agent.py               # Reserved for future AI features (currently empty)
 frontend/                  # Vite + React app
+  vercel.json              # Vercel deployment config with SPA rewrites
   src/
     api.js                 # All fetch calls to the backend (7 functions)
-    App.jsx                # Router setup (BrowserRouter, 3 routes)
+    App.jsx                # Router setup (BrowserRouter, 2 routes + player detail)
     pages/
       SearchPage.jsx       # Debounced player search → navigate to profile
-      PlayerPage.jsx       # Bio card + Weekly/Seasonal tabs + Recharts charts + stat table
-      MatchupPage.jsx      # Player autocomplete + week picker + defense radar chart
+      PlayerPage.jsx       # Bio card + Weekly/Seasonal tabs + Recharts charts + stat table + game exclusion checkboxes
+      MatchupPage.jsx      # Player autocomplete + defence analysis + player avg tile + row exclusion checkboxes
     components/
-      NavBar.jsx           # Top nav with active-link highlighting
+      NavBar.jsx           # Top nav with active-link highlighting (Players, Matchups)
       Spinner.jsx          # Loading spinner
       ErrorMsg.jsx         # Red error banner
   vite.config.js           # Tailwind plugin + /api proxy to localhost:8000
 data/
-  refresh.py               # Weekly data refresh script
+  refresh.py               # Weekly data refresh script (incremental, single-season)
+render.yaml                # Render.com backend deployment blueprint
 scripts/
   setup.sh
 .env.example               # Required env vars
@@ -77,7 +79,9 @@ Tables are created by `backend/data/fetch.py` using `nfl_data_py`:
 | `weekly_stats`  | `player_id`, `season`, `week`, `recent_team`, `opponent_team`, stat cols   |
 | `schedules`     | `season`, `week`, `home_team`, `away_team`, `game_id`, `gameday`           |
 
-All column names are lowercased. Seasons currently loaded: **2019–2024**.
+All column names are lowercased. Seasons currently loaded: **2019–2024** (stats),
+**2019–2025** (rosters & schedules). 2025 player stats will be available once
+nflverse publishes them after the season begins.
 
 **Important:** The `rosters` table (from `import_seasonal_rosters`) uses `team`
 not `recent_team`. The `weekly_stats` table uses `recent_team`.
@@ -173,10 +177,8 @@ App at `http://localhost:5173`. Vite proxies `/api` → `http://localhost:8000`.
 
 ## What's Not Yet Built
 
-- `data/refresh.py` — weekly scheduled data refresh
 - Auth / rate limiting (not planned for MVP)
 - Ad placement (planned for revenue, not yet designed)
 - AI features (deferred — stubs exist in `claude/` and `routes/ask.py`)
-- Frontend deployment config (Vercel)
-- Backend deployment config (Render.com)
-- Player comparison page (side-by-side two players)
+- Frontend deployment config (Vercel — `vercel.json` exists, needs connecting)
+- Backend deployment config (Render — `render.yaml` exists, needs connecting)

@@ -1,0 +1,22 @@
+# render.yaml — Render.com Blueprint for the NFL Analytics backend
+# https://render.com/docs/blueprint-spec
+
+services:
+  - type: web
+    name: nfl-analytics-api
+    runtime: python
+    region: ohio
+    plan: free
+    rootDir: backend
+    buildCommand: |
+      pip install nfl_data_py --no-deps
+      pip install -r requirements.txt
+      python data/fetch.py
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: FRONTEND_ORIGIN
+        value: https://nfl-analytics.vercel.app
+      - key: PYTHON_VERSION
+        value: "3.12"
+    autoDeploy: true
+    healthCheckPath: /
