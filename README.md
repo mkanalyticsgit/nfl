@@ -7,8 +7,7 @@ A free, web-based NFL player analytics tool powered by Python, React, and Claude
 ## What It Does
 
 - **Player Stats** — Search any NFL player and view historical stats (passing yards, touchdowns, rushing yards, receiving yards, and more)
-- **Matchup Analysis** — Compare a player's performance history against their upcoming opponent's defensive rankings
-- **AI Insights** — Claude-powered summaries and natural language queries ("How has Patrick Mahomes performed against top defenses?")
+- **Matchup Analysis** — Compare a player's performance history against their upcoming opponent's defensive rankings, with selectable game rows
 - **Player Comparison** — Side-by-side stat comparison between two players
 
 ---
